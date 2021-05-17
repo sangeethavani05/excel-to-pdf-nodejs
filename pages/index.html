@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Excel to PDF Convertor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div style="text-align:center; margin-top: 15%;">
+        <h2>Upload your Excel file: </h2>
+        <form action="/upload" style="font-size: xx-small;" enctype="multipart/form-data" method="post">
+            <input type="file" id="file" name="uploadedFile" accept="Excel" onchange=validate_fileupload(this.value)>
+            <input type="submit" id="submit" disabled="disabled" value="Upload">
+        </form>
+    </div>
+</body>
+<script>
+    function validate_fileupload(file_name){
+        if(file_name && file_name.includes('xlsx')){
+            document.getElementById('file').style.color = 'black'
+            $("#submit").attr("disabled",false);
+        }
+        else{
+            document.getElementById('file').style.color = 'red'
+            alert('Pleae Upload an XLSX File')
+        }
+    }
+</script>
+</html>
