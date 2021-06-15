@@ -8,8 +8,7 @@ class Actions{
 
   async uploadFile(file){
     try{
-      console.log(`\n${new Date()} In Process: ${file.file.originalname}`);
-      // Upload XLSX file
+      // Uploaded XLSX file
       const xlsx_file = this.app.path.join(__dirname,'../xlsx-files',file.file.originalname);
 
       // Read XLSX File and HTML Conversion

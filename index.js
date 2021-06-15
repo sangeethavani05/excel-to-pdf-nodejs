@@ -11,22 +11,33 @@ const app = express();
 // Create Folders to Upload
 const XLSXfolderName = 'xlsx-files';
 const PDFfolderName = 'pdf-files';
-try {
-  if (!fs.existsSync(XLSXfolderName)) {
-    fs.mkdirSync(XLSXfolderName);
+
+fs.access(__dirname, fs.constants.W_OK, (err) => {
+  if (err) {
+      console.log('Permission needed to create folder on path: ',__dirname);
+  } else {
+    try {
+      if (!fs.existsSync(XLSXfolderName)) {
+        fs.mkdirSync(XLSXfolderName);
+      }
+      if (!fs.existsSync(PDFfolderName)) {
+        fs.mkdirSync(PDFfolderName);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
-  if (!fs.existsSync(PDFfolderName)) {
-    fs.mkdirSync(PDFfolderName);
-  }
-} catch (err) {
-  console.error(err);
-}
+});
 
 // To Upload File
 let upload = multer({ dest: '/xlsx-files' });
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'xlsx-files');
+  },
+  onError : function(err, next) {
+    console.log('error while uploading file:', err);
+    next(err);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -51,7 +62,7 @@ new Server();
 
 // Server Listening on Default port 3000
 app.listen(3000, () => {
-  console.log(`${new Date()} Server running at http://localhost:3000 `);
+  console.log(`${new Date()} Server running at http://localhost:3000`);
 });
 
 module.exports = app;
