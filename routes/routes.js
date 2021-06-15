@@ -24,9 +24,19 @@ class Router{
     });
       
     // File Upload
-    this.app.post('/upload', this.app.upload.single('uploadedFile'),async(req, res) => {
-      const response = await this.actions.uploadFile(req);
-      response == true ? res.redirect('/success') : res.redirect('/failure');
+    this.app.post('/upload', this.app.multer(
+      { 
+        storage: this.app.multer.diskStorage({
+          destination:  (req, file, cb) => cb(null, this.app.path.join(__dirname,'../')),
+          filename:  (req, file, cb) => cb(null, file.originalname),
+          onError : (err, next) => {
+            console.log('error while uploading file:', err);
+            next(err);
+          }
+        })
+      }).single('uploadedFile'),async(req, res) => {
+        const response = await this.actions.uploadFile(req);
+        response == true ? res.redirect('/success') : res.redirect('/failure');
     });
   }
 }

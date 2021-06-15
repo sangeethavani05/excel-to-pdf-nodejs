@@ -9,7 +9,7 @@ class Actions{
   async uploadFile(file){
     try{
       // Uploaded XLSX file
-      const xlsx_file = this.app.path.join(__dirname,'../xlsx-files',file.file.originalname);
+      const xlsx_file = this.app.path.join(__dirname,'../',file.file.originalname);
 
       // Read XLSX File and HTML Conversion
       const xlsx_data = await XLSX.readFile(xlsx_file);
@@ -17,7 +17,7 @@ class Actions{
 
       // HTML to PDF File Conversion
       const pdf_file_name = file.file.originalname.substring(0, file.file.originalname.length - 5)+'.pdf';
-      const pdf_file_path = this.app.path.join(__dirname, '../pdf-files',pdf_file_name);
+      const pdf_file_path = this.app.path.join(__dirname,'../',pdf_file_name);
       const pdf_file = await PDF.generatePdf({content: html_data},{ path: pdf_file_path });
 
       // Result
